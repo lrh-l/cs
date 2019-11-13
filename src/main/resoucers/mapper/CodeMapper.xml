@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lrh.cs.dao.CodeDao">
+    <resultMap id="code" type="com.lrh.cs.pojo.Code">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="dirid" property="dirid"/>
+        <result column="parid" property="parid"/>
+        <collection property="codeList" column="dirid" ofType="code" javaType="java.util.ArrayList" select="code2"/>
+        <collection property="codeList" column="dirid" ofType="code" javaType="java.util.ArrayList" select="code3"/>
+    </resultMap>
+    <select id="queryList" resultMap="code">
+        select t.title ,t.dirid
+        from  code t
+        where t.dirid=2
+    </select>
+
+    <select id="code2" resultMap="code">
+      select  t2.title
+      from code t , code t1
+      left join code t2 on t1.dirid=t2.parid
+      where t1.parid=t.dirid and t.dirid=#{dirid}
+
+    </select>
+    <select id="code3" resultMap="code">
+      SELECT t2.title FROM CODE t ,
+      CODE t1 LEFT JOIN CODE t2 ON t1.dirid=t2.parid
+      WHERE t.dirid=#{dirid} AND t1.parid=t.dirid
+    </select>
+</mapper>

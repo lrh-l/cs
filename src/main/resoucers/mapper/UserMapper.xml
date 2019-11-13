@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.lrh.cs.dao.UserDao">
+
+    <select id="login"   parameterType="map" resultType="com.lrh.cs.pojo.User">
+       SELECT * FROM smbms_user
+       <where>
+           <if test="userCode!=null and userCode!= '' ">
+               and userCode=#{userCode}
+           </if>
+           <if test="userPassword!=null and userPassword !=''">
+               and userPassword=#{userPassword}
+           </if>
+       </where>
+    </select>
+  <select id="getUserList" parameterType="map"  resultType="User">
+      SELECT    t.* ,s.roleName
+      FROM smbms_user t
+      LEFT JOIN smbms_role s ON t.userRole=s.id
+      <where>
+          <if test="userName!=null">
+              and t.userName=#{'%'userName'%'}
+          </if>
+          <if test="userRole!=null and userRole!=''">
+              and t.userRole=#{userRole}
+          </if>
+      </where>
+        limit #{currentPageNo},#{pageSize};
+  </select>
+    <select id="getlikeNamePwdList" resultType="com.lrh.cs.pojo.User">
+      SELECT  *
+      from smbms_user
+      <where>
+          <if test="namePwd !=null and namePwd!=''">
+             and userCode like "%"#{namePwd}"%"or  userName like "%"#{namePwd}"%"
+          </if>
+      </where>
+    </select>
+</mapper>
