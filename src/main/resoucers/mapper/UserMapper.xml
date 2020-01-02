@@ -5,7 +5,7 @@
 <mapper namespace="com.lrh.cs.dao.UserDao">
 
     <select id="login"   parameterType="map" resultType="com.lrh.cs.pojo.User">
-       SELECT * FROM smbms_user
+       SELECT * FROM user
        <where>
            <if test="userCode!=null and userCode!= '' ">
                and userCode=#{userCode}
